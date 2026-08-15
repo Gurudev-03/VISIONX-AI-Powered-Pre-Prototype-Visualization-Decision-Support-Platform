@@ -1,0 +1,929 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+/* =========================================================
+   VISIONX INTERACTIVE TRAFFIC SCENE
+========================================================= */
+
+.vx-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: 900px;
+}
+
+.vx-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(34, 211, 238, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #082f49 0%,
+      #031827 50%,
+      #020617 100%
+    );
+}
+
+.vx-road {
+  position: absolute;
+  background: #111827;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+.horizontal-road {
+  width: 120%;
+  height: 190px;
+  left: -10%;
+  top: 53%;
+  transform: translateY(-50%);
+}
+
+.vertical-road {
+  width: 190px;
+  height: 120%;
+  top: -10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.vx-road::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 38px,
+      rgba(255,255,255,0.35) 38px 58px,
+      transparent 58px 96px
+    );
+  opacity: 0.25;
+}
+
+.vertical-road::before {
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 38px,
+      rgba(255,255,255,0.35) 38px 58px,
+      transparent 58px 96px
+    );
+}
+
+.vx-lane {
+  position: absolute;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 25px,
+    rgba(103, 232, 249, 0.25) 25px 45px,
+    transparent 45px 70px
+  );
+  height: 2px;
+  left: 5%;
+  width: 90%;
+  top: 50%;
+}
+
+.lane-a {
+  transform: translateY(-48px);
+}
+
+.lane-b {
+  transform: translateY(48px);
+}
+
+.vx-crossing {
+  position: absolute;
+  width: 150px;
+  height: 100px;
+  left: calc(50% - 75px);
+  top: calc(50% - 50px);
+  transform: rotate(90deg);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+}
+
+.vx-crossing span {
+  height: 8px;
+  width: 100%;
+  background: rgba(226, 232, 240, 0.8);
+  box-shadow: 0 0 8px rgba(255,255,255,0.1);
+}
+
+.traffic-signal {
+  position: absolute;
+  left: calc(50% + 125px);
+  top: calc(50% - 110px);
+  width: 25px;
+  padding: 6px;
+  border-radius: 8px;
+  background: #020617;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 5;
+}
+
+.traffic-signal i {
+  width: 12px;
+  height: 12px;
+  margin: auto;
+  border-radius: 50%;
+  background: #1e293b;
+}
+
+.traffic-signal.red .red {
+  background: #ef4444;
+  box-shadow: 0 0 14px #ef4444;
+}
+
+.traffic-signal.yellow .yellow {
+  background: #facc15;
+  box-shadow: 0 0 14px #facc15;
+}
+
+.traffic-signal.green .green {
+  background: #22c55e;
+  box-shadow: 0 0 14px #22c55e;
+}
+
+.vx-car {
+  position: absolute;
+  width: 28px;
+  height: 52px;
+  border-radius: 7px;
+  background: linear-gradient(
+    135deg,
+    #60a5fa,
+    #1d4ed8
+  );
+  border: 1px solid rgba(147, 197, 253, 0.6);
+  box-shadow:
+    0 0 15px rgba(59, 130, 246, 0.4);
+  z-index: 6;
+}
+
+.vx-car::before,
+.vx-car::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  height: 8px;
+  border-radius: 3px;
+  background: rgba(186, 230, 253, 0.55);
+}
+
+.vx-car::before {
+  top: 6px;
+}
+
+.vx-car::after {
+  bottom: 6px;
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.car-one {
+  left: 30%;
+  top: calc(50% - 70px);
+  animation: carMoveOne 7s linear infinite;
+}
+
+.car-two {
+  right: 28%;
+  top: calc(50% + 35px);
+  transform: rotate(180deg);
+  animation: carMoveTwo 8s linear infinite;
+}
+
+.car-three {
+  left: calc(50% - 80px);
+  top: 22%;
+  transform: rotate(90deg);
+  animation: carMoveThree 6s linear infinite;
+}
+
+.car-four {
+  left: calc(50% + 35px);
+  bottom: 18%;
+  transform: rotate(-90deg);
+  animation: carMoveFour 7s linear infinite;
+}
+
+@keyframes carMoveOne {
+  from {
+    left: 15%;
+  }
+
+  to {
+    left: 85%;
+  }
+}
+
+@keyframes carMoveTwo {
+  from {
+    right: 15%;
+  }
+
+  to {
+    right: 85%;
+  }
+}
+
+@keyframes carMoveThree {
+  from {
+    top: 15%;
+  }
+
+  to {
+    top: 80%;
+  }
+}
+
+@keyframes carMoveFour {
+  from {
+    bottom: 15%;
+  }
+
+  to {
+    bottom: 80%;
+  }
+}
+
+.detection-zone {
+  position: absolute;
+  padding: 8px 11px;
+  border: 1px dashed rgba(34, 211, 238, 0.65);
+  border-radius: 8px;
+  color: #67e8f9;
+  background: rgba(8, 47, 73, 0.35);
+  font-size: 7px;
+  letter-spacing: 1px;
+  z-index: 7;
+  animation: detectionPulse 2s ease-in-out infinite;
+}
+
+.zone-one {
+  left: 12%;
+  top: 39%;
+}
+
+.zone-two {
+  right: 12%;
+  top: 61%;
+}
+
+@keyframes detectionPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.emergency-route {
+  position: absolute;
+  left: 20%;
+  bottom: 18%;
+  padding: 7px 10px;
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  color: #4ade80;
+  background: rgba(20, 83, 45, 0.2);
+  border-radius: 8px;
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+
+.vx-building {
+  position: absolute;
+  bottom: calc(50% + 100px);
+  width: 130px;
+  height: 100px;
+  background:
+    linear-gradient(
+      135deg,
+      #172554,
+      #0f172a
+    );
+  border: 1px solid rgba(96, 165, 250, 0.15);
+}
+
+.building-left {
+  left: 10%;
+}
+
+.building-right {
+  right: 10%;
+  height: 130px;
+}
+
+@media (max-width: 800px) {
+  .vx-scene {
+    transform: scale(0.9);
+    transform-origin: center;
+  }
+
+  .vx-building {
+    width: 90px;
+    height: 80px;
+  }
+
+  .detection-zone {
+    font-size: 6px;
+  }
+}
+/* =========================================================
+   VISIONX ADDITIONAL STYLES
+========================================================= */
+
+.dashboard-section {
+  margin-top: 34px;
+}
+
+.sidebar-info {
+  padding: 15px 10px;
+  margin-bottom: 10px;
+  border-top: 1px solid #1c2636;
+}
+
+.sidebar-info span {
+  display: block;
+  color: #4f6075;
+  font-size: 7px;
+  letter-spacing: 1.4px;
+}
+
+.sidebar-info strong {
+  display: block;
+  margin-top: 7px;
+  color: #8392a7;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   VISUALIZATION ROAD
+========================================================= */
+
+.road-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: 900px;
+}
+
+.road {
+  position: absolute;
+  background: #111827;
+  box-shadow:
+    inset 0 0 0 1px rgba(148, 163, 184, 0.08),
+    0 0 35px rgba(0, 0, 0, 0.5);
+}
+
+.horizontal-road {
+  width: 100%;
+  height: 210px;
+  top: 53%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.vertical-road {
+  width: 210px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.road-center {
+  position: absolute;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 22px,
+    rgba(226, 232, 240, 0.7) 22px,
+    rgba(226, 232, 240, 0.7) 42px
+  );
+  opacity: 0.45;
+}
+
+.horizontal-center {
+  width: 100%;
+  height: 3px;
+  top: 53%;
+  transform: translateY(-50%);
+}
+
+.vertical-center {
+  width: 3px;
+  height: 100%;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0,
+    transparent 22px,
+    rgba(226, 232, 240, 0.7) 22px,
+    rgba(226, 232, 240, 0.7) 42px
+  );
+}
+
+.lane-mark {
+  position: absolute;
+  background: rgba(148, 163, 184, 0.3);
+}
+
+.lane-1,
+.lane-2 {
+  width: 1px;
+  height: 100%;
+  top: 0;
+}
+
+.lane-1 {
+  left: calc(50% - 85px);
+}
+
+.lane-2 {
+  left: calc(50% + 85px);
+}
+
+.lane-3,
+.lane-4 {
+  height: 1px;
+  width: 100%;
+  left: 0;
+}
+
+.lane-3 {
+  top: calc(53% - 85px);
+}
+
+.lane-4 {
+  top: calc(53% + 85px);
+}
+
+/* =========================================================
+   TRAFFIC LIGHTS
+========================================================= */
+
+.traffic-light {
+  position: absolute;
+  width: 22px;
+  height: 67px;
+  padding: 5px 4px;
+  border-radius: 7px;
+  background: #020617;
+  border: 1px solid #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 5;
+}
+
+.tl-1 {
+  left: calc(50% - 125px);
+  top: calc(53% - 120px);
+}
+
+.tl-2 {
+  right: calc(50% - 125px);
+  bottom: calc(47% - 120px);
+}
+
+.light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: block;
+}
+
+.light.red {
+  background: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.8);
+}
+
+.light.yellow {
+  background: #eab308;
+}
+
+.light.green {
+  background: #22c55e;
+  opacity: 0.3;
+}
+
+/* =========================================================
+   VEHICLES
+========================================================= */
+
+.vehicle {
+  position: absolute;
+  z-index: 10;
+  width: 38px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.7));
+}
+
+.vehicle-1 {
+  left: 22%;
+  top: calc(53% - 45px);
+  animation: vehicleMoveOne 7s linear infinite;
+}
+
+.vehicle-2 {
+  right: 20%;
+  top: calc(53% + 40px);
+  animation: vehicleMoveTwo 8s linear infinite;
+}
+
+.vehicle-3 {
+  left: calc(50% + 38px);
+  top: 18%;
+  animation: vehicleMoveThree 8s linear infinite;
+}
+
+.vehicle-4 {
+  left: calc(50% - 65px);
+  bottom: 12%;
+  animation: vehicleMoveFour 9s linear infinite;
+}
+
+@keyframes vehicleMoveOne {
+  0% {
+    transform: translateX(-100px);
+  }
+
+  50% {
+    transform: translateX(180px);
+  }
+
+  100% {
+    transform: translateX(500px);
+  }
+}
+
+@keyframes vehicleMoveTwo {
+  0% {
+    transform: translateX(100px);
+  }
+
+  50% {
+    transform: translateX(-180px);
+  }
+
+  100% {
+    transform: translateX(-500px);
+  }
+}
+
+@keyframes vehicleMoveThree {
+  0% {
+    transform: translateY(-120px);
+  }
+
+  50% {
+    transform: translateY(150px);
+  }
+
+  100% {
+    transform: translateY(400px);
+  }
+}
+
+@keyframes vehicleMoveFour {
+  0% {
+    transform: translateY(120px);
+  }
+
+  50% {
+    transform: translateY(-130px);
+  }
+
+  100% {
+    transform: translateY(-400px);
+  }
+}
+
+/* =========================================================
+   PEDESTRIAN ZONE
+========================================================= */
+
+.pedestrian-zone {
+  position: absolute;
+  left: calc(50% - 105px);
+  top: calc(53% - 70px);
+  width: 210px;
+  height: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: repeating-linear-gradient(
+    90deg,
+    #e2e8f0 0,
+    #e2e8f0 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  opacity: 0.65;
+  z-index: 4;
+}
+
+.pedestrian-zone span {
+  position: absolute;
+  top: -25px;
+  color: #67e8f9;
+  font-size: 7px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   SENSOR ZONES
+========================================================= */
+
+.sensor-zone {
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 1px dashed rgba(34, 211, 238, 0.5);
+  background: rgba(34, 211, 238, 0.035);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #67e8f9;
+  font-size: 7px;
+  letter-spacing: 1px;
+  animation: sensorPulse 2.5s ease-in-out infinite;
+}
+
+.sensor-one {
+  left: 25%;
+  top: 29%;
+}
+
+.sensor-two {
+  right: 25%;
+  bottom: 22%;
+}
+
+@keyframes sensorPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* =========================================================
+   AI INTERSECTION CORE
+========================================================= */
+
+.intersection-core {
+  position: absolute;
+  left: 50%;
+  top: 53%;
+  transform: translate(-50%, -50%);
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 2px solid #67e8f9;
+  background: rgba(8, 47, 73, 0.75);
+  color: #67e8f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 12px;
+  box-shadow:
+    0 0 25px rgba(34, 211, 238, 0.45),
+    inset 0 0 20px rgba(34, 211, 238, 0.15);
+  z-index: 6;
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+@keyframes corePulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 20px rgba(34, 211, 238, 0.3),
+      inset 0 0 15px rgba(34, 211, 238, 0.1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 45px rgba(34, 211, 238, 0.7),
+      inset 0 0 25px rgba(34, 211, 238, 0.25);
+  }
+}
+
+/* =========================================================
+   APPROVAL
+========================================================= */
+
+.approval-home-button {
+  margin-top: 14px;
+}
+
+/* =========================================================
+   RESPONSIVE VISUALIZATION
+========================================================= */
+
+@media (max-width: 800px) {
+  .horizontal-road {
+    height: 175px;
+  }
+
+  .vertical-road {
+    width: 175px;
+  }
+
+  .lane-1 {
+    left: calc(50% - 70px);
+  }
+
+  .lane-2 {
+    left: calc(50% + 70px);
+  }
+
+  .lane-3 {
+    top: calc(53% - 70px);
+  }
+
+  .lane-4 {
+    top: calc(53% + 70px);
+  }
+
+  .vehicle {
+    font-size: 19px;
+  }
+
+  .sensor-zone {
+    width: 80px;
+    height: 80px;
+  }
+
+  .intersection-core {
+    width: 45px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 600px) {
+  .road-scene {
+    transform: scale(0.9);
+  }
+
+  .vx-3d-container {
+    height: 550px;
+  }
+
+  .pedestrian-zone {
+    width: 170px;
+    left: calc(50% - 85px);
+  }
+
+  .traffic-light {
+    transform: scale(0.8);
+  }
+
+  .prototype-score {
+    width: 105px;
+    height: 105px;
+  }
+
+  .prototype-score strong {
+    font-size: 28px;
+  }
+}
